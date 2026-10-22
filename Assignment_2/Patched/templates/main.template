@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>@home</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-4">
+    <h1>@home <small class="text-muted">home environment monitor</small></h1>
+
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        Kitchen
+        <span class="badge badge-info" id="kitchen-temperature">{{kitchen_temp}} &deg;C</span>
+      </div>
+      <div class="card-body">
+        <button type="button" class="btn {{kitchen_stove_class}}" id="kitchen-lights-stove" data-room="kitchen" data-light="stove">Stove light</button>
+        <button type="button" class="btn {{kitchen_ceiling_class}}" id="kitchen-lights-ceiling" data-room="kitchen" data-light="ceiling">Ceiling light</button>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        Living room
+        <span class="badge badge-info" id="livingroom-temperature">{{livingroom_temp}} &deg;C</span>
+      </div>
+      <div class="card-body">
+        <button type="button" class="btn {{livingroom_sofa_class}}" id="livingroom-lights-sofa" data-room="livingroom" data-light="sofa">Sofa light</button>
+        <button type="button" class="btn {{livingroom_ceiling_class}}" id="livingroom-lights-ceiling" data-room="livingroom" data-light="ceiling">Ceiling light</button>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        Bedroom
+        <span class="badge badge-info" id="bedroom-temperature">{{bedroom_temp}} &deg;C</span>
+      </div>
+      <div class="card-body">
+        <button type="button" class="btn {{bedroom_bed_class}}" id="bedroom-lights-bed" data-room="bedroom" data-light="bed">Bed light</button>
+        <button type="button" class="btn {{bedroom_ceiling_class}}" id="bedroom-lights-ceiling" data-room="bedroom" data-light="ceiling">Ceiling light</button>
+      </div>
+    </div>
+
+    <button type="button" id="logout-button" class="btn btn-outline-danger mt-3">Log out</button>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

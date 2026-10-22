@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Squeak!</title>
+  <meta name="csrf-token" content="{{csrfToken}}">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <nav class="navbar navbar-light bg-light justify-content-between">
+    <span class="navbar-brand mb-0 h1">Squeak!</span>
+    <form id="squeak-form" class="form-inline" action="/squeak" method="POST">
+      <input type="hidden" name="csrf_token" value="{{csrfToken}}">
+      <span class="mr-2">{{username}}</span>
+      <input name="squeak" type="text" class="form-control mr-1" style="width: 350px;" placeholder="What's happening?">
+      <button type="submit" class="btn btn-primary mr-1">Squeak!</button>
+      <button type="button" id="signout-button" class="btn btn-secondary">Sign out</button>
+    </form>
+  </nav>
+
+  <div class="container mt-4">
+    {{#squeaks}}
+    <div class="squeak">
+      <div class="squeak-header">
+        <span class="squeak-username">{{username}}</span>
+        <span class="squeak-time">{{time}}</span>
+      </div>
+      <div class="squeak-text">{{text}}</div>
+    </div>
+    {{/squeaks}}
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

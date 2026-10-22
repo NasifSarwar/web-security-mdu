@@ -1,0 +1,12 @@
+{
+  "name": "assignment2-patched",
+  "version": "1.0.0",
+  "description": "DVA489 Assignment 2 - @home - patched (secured) version",
+  "main": "httpd.js",
+  "scripts": {
+    "start": "node httpd.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
