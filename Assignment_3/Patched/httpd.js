@@ -7,9 +7,10 @@
 //                     /signout (see report for why /signin and /signup
 //                     don't need one: they only accept JSON bodies, which
 //                     a classic forged form cannot send)
-//   3. ReDoS        - FIXED: usernames must match a fixed, safe whitelist
-//                     regex, and the password/username check no longer
-//                     builds a regex from user input at all
+//   3. ReDoS        - FIXED: usernames are checked one character at a time
+//                     against a fixed, safe whitelist (letters, digits,
+//                     underscore, 4+ chars) - no regular expression is
+//                     used anywhere in this check or the password check
 
 const express = require('express');
 const mustacheExpress = require('mustache-express');
@@ -73,6 +74,31 @@ function createUser(username, password) {
   const salt = crypto.randomBytes(16).toString('hex');
   users[username] = { salt, hash: hashPassword(password, salt) };
   persistUsers();
+}
+
+// Checks that a username is made only of letters, digits, and underscores,
+// and is at least 4 characters long. Written as a plain character-by-
+// character loop instead of a regular expression on purpose: this function
+// never compiles a pattern from user input (or from anything at all), so
+// there is nothing here that could ever cause catastrophic backtracking,
+// no matter what string is passed in.
+function isValidUsernameFormat(username) {
+  if (typeof username !== 'string') return false;
+  if (username.length < 4) return false;
+
+  for (let i = 0; i < username.length; i++) {
+    const ch = username[i];
+    const isLowercase = ch >= 'a' && ch <= 'z';
+    const isUppercase = ch >= 'A' && ch <= 'Z';
+    const isDigit = ch >= '0' && ch <= '9';
+    const isUnderscore = ch === '_';
+
+    if (!isLowercase && !isUppercase && !isDigit && !isUnderscore) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // ---------------------------------------------------------------------------
@@ -175,12 +201,13 @@ app.get('/', (req, res) => {
 app.post('/signup', (req, res) => {
   const { username, password } = req.body;
 
-  // FIXED: usernames are restricted to a fixed, safe character set (checked
-  // against a hardcoded, non-dynamic regex - never built from user input),
-  // so there is nothing left for an attacker to inject.
-  const USERNAME_PATTERN = /^[A-Za-z0-9_]{4,}$/;
-  const validUsername =
-    typeof username === 'string' && USERNAME_PATTERN.test(username) && !users[username];
+  // FIXED: usernames are restricted to a fixed, safe character set. This is
+  // checked by walking the string one character at a time and confirming
+  // every character is a letter, a digit, or an underscore, and that the
+  // username is at least 4 characters long. There is no regular expression
+  // here at all, let alone one built from user input, so there is no ReDoS
+  // surface in this check regardless of what the attacker submits.
+  const validUsername = isValidUsernameFormat(username) && !users[username];
 
   if (!validUsername) {
     res.json({ success: false, field: 'username' });
